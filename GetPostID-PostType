@@ -1,0 +1,71 @@
+		<!--samp-->
+		
+		<?php
+			$i_page_id = 139;
+			$o_post = get_post($i_page_id);
+			 
+			 
+			if( !is_null($o_post) ):
+	 	?>
+
+			<div id="what_we_offer"></div>
+			<div class="offers-wrapp">
+			 
+				<div class="description-wrapper">
+					<div class="description">
+						<h1 class="page-title"><?php echo $o_post->post_title; ?></h1>
+						<?php echo apply_filters('the_content', $o_post->post_content); ?>
+					</div>
+				</div>
+
+				<div class="lead-ins clearfix">
+					<?php
+						$a_fields = array(
+						'post_type' => 'offer-list',
+						'posts_per_page' => 3,
+						'orderby' => 'menu_order',
+						'order' => 'ASC' );
+						 
+						$o_posts = new WP_Query( $a_fields );
+					?>
+					 
+					<?php while ( $o_posts->have_posts() ) : $o_posts->the_post(); ?>
+					 
+					<div class="lead-in left">
+						<div class="image">
+
+							<div class="lead-in-img"></div>
+							<?php
+							if(has_post_thumbnail()) {
+							  the_post_thumbnail('offers-img'); 
+							}
+							else {?>
+							  <img alt="<?php the_title(); ?>" width="215" height="218" src="<?php bloginfo('template_url');?>/images/noimage.gif"/>
+							  <?php
+							}
+						?>
+						</div>
+						 
+						<h2><?php the_title(); ?></h2>
+						<div>
+							<?php echo wpautop(ShortenText(get_the_content(),150)); ?>	
+							<?php// echo ShortenText(strip_tags(get_the_content()),150); ?>
+						</div>
+<!-- 						<?php
+						$s_view_more = '';
+						 
+						if( function_exists('get_field') ) {
+							if( get_field('view_more_link') )
+								{
+									$s_view_more = get_field('view_more_link');
+								}
+							}
+						?> -->
+						<a class="read-more" href="<?php the_permalink();?>"> Read More</a>
+					</div>
+					<?php endwhile; ?>
+					<?php wp_reset_postdata(); ?>
+				</div>
+
+			</div>
+		<?php endif;?>
