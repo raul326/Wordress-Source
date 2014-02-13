@@ -1,0 +1,108 @@
+      <div class="banner-wrapper section-wrapper globalwidth">
+        <div class="banner-pad section-pad-wrapper">
+
+          <div id="banner" class="banner-wrap section-block-wrapper left">
+            <div class="banner banner-slide">
+              <?php
+                  $args = array( 'post_type' => 'banner-slide', 'orderby' => 'menu_order', 'order' => 'ASC' );
+                  $loops = new WP_Query( $args );
+              ?>
+              <?php while($loops->have_posts()) : $loops->the_post();   ?>     
+                <div class="section-wrapper banner-slide-wrapp">
+                  <div class="banner-img-wrapp">
+                    <?php the_post_thumbnail('banner-slide'); ?>
+                    
+                    <!--Use below if the banner in inner page is the same in home page-->
+                    <!-- <?php
+				                if (is_front_page()) {
+				                  the_post_thumbnail('banner-slide');
+				                }
+				                else{
+				                  the_post_thumbnail('banner-slide-inner');
+				                }  
+				            ?> -->  
+                  </div>
+                  <div class="banner-content-wrapp">
+                      <div class="banner-title"><?php the_title(); ?></div>
+                      <p><?php echo ShortenText(strip_tags(get_the_content()),100); ?></p>
+                      <!-- <div class="banner-link"><a class="read-more" href="<?php echo get_permalink(); ?>">Read More </a></div> -->                   
+                  </div>
+                </div>  
+              <?php endwhile; ?>
+              <?php wp_reset_postdata(); ?>
+            </div>
+            <div id="bannernav"></div>
+            <div class="watch-vid-wrapper">
+              <a class="fancy-video" href="<?php echo do_shortcode("[titan-business-details value=social-youtube name=company-info]") ?> "> 
+                  Watch our Video 
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      
+      
+      /*ADD THIS IN FUNCTION.PHP*/
+      /*CUSTOM POST TYPES*/
+      // Set priority to avoid plugin conflicts
+      add_action("init", "register_rc", 1);
+      
+      function register_rc() {
+        $a_types = array(
+            // Banner
+            array(
+                "the_type"  =>  "banner-slide",
+                "single"  =>  "Banner",
+                "plural"  =>  "Banners",
+            )
+      
+        );
+      
+        foreach ($a_types as $a_type) {
+      
+          $s_the_type = $a_type['the_type'];
+          $s_single = $a_type['single'];
+          $s_plural = $a_type['plural'];
+      
+          if(!empty($a_type['slug'])) {
+            $s_slug = $a_type['slug'];
+          }else{
+            $s_slug =$a_type['the_type'];
+          }
+      
+          // for supports
+          $a_supports = empty($a_type['supports']) ? array('title','editor','thumbnail','page-attributes') : $a_type['supports'];
+      
+          $a_labels = array(
+              'name'          => _x($s_plural, 'post type general name'),
+              'singular_name'     => _x($s_single, 'post type singular name'),
+              'add_new'         => _x('Add New', $s_single),
+              'add_new_item'      => __('Add New ' . $s_single),
+              'edit_item'       => __('Edit ' . $s_single),
+              'new_item'        => __('New ' . $s_single),
+              'view_item'       => __('View ' . $s_single),
+              'search_items'      => __('Search ' . $s_plural),
+              'not_found'       =>  __('No ' . $s_plural . ' found'),
+              'not_found_in_trash'  => __('No ' . $s_plural . ' found in Trash')
+          );
+      
+          $a_rewrite = array(
+              'slug'                => $s_slug,
+              'with_front'          => true,
+              'pages'               => true,
+              'feeds'               => true,
+          );
+      
+          $a_args = array(
+              'labels'    => $a_labels,
+              'public'    => true,
+              'has_archive'   => 'true',
+              'rewrite'       => $a_rewrite,
+              'supports'    => $a_supports
+          );
+      
+          register_post_type($s_the_type , $a_args);
+      
+        } // end of foreach
+      } // end of function register_rc
