@@ -106,3 +106,15 @@
       
         } // end of foreach
       } // end of function register_rc
+      
+      
+        //BANNER SLIDE -- add this script
+	$(".banner-slide").cycle({
+		fx:'fade',
+		speed:700,
+		timeout:4000,     
+		prev: '#prev', 
+		next: '#next',
+		cleartypeNoBg:true
+	});
+
