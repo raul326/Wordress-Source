@@ -1,0 +1,4 @@
+<?php 
+	$form = GFFormsModel::get_form_meta(2);
+	echo wpautop($form['description']);
+?>	
