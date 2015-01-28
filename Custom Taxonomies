@@ -1,0 +1,61 @@
+// REGISTER CUSTOM TAXONOMIES --> add this in function.php
+function register_taxonomies()  {
+
+ $a_taxonomies = array(
+  // Genres
+  array(
+    // Custom post type name that you want to have an category
+    "the_type"     => "our-staff", //custom post type
+    "the_taxonomies" => "our_locations",
+    "single"      => "Studio Location",
+    "plural"      => "Studio Locations"
+  )
+ );
+
+foreach ($a_taxonomies as $a_taxonomy) {
+
+  $s_the_type = $a_taxonomy["the_type"];
+  $s_the_taxonomies = $a_taxonomy["the_taxonomies"];
+  $s_single = $a_taxonomy["single"];
+  $s_plural = $a_taxonomy["plural"];
+
+  $a_labels = array(
+   'name'                       => _x( $s_plural, 'Taxonomy General Name', 'text_domain' ),
+   'singular_name'              => _x( $s_single, 'Taxonomy Singular Name', 'text_domain' ),
+   'menu_name'                  => __( $s_plural, 'text_domain' ),
+   'all_items'                  => __( 'All '.$s_plural, 'text_domain' ),
+   'parent_item'                => __( 'Parent '.$s_single, 'text_domain' ),
+   'parent_item_colon'          => __( 'Parent '.$s_single.':', 'text_domain' ),
+   'new_item_name'              => __( 'New '.$s_single.' Name', 'text_domain' ),
+   'add_new_item'               => __( 'Add New '.$s_single, 'text_domain' ),
+   'edit_item'                  => __( 'Edit '.$s_single, 'text_domain' ),
+   'update_item'                => __( 'Update '.$s_single, 'text_domain' ),
+   'separate_items_with_commas' => __( 'Separate '.strtolower($s_plural).' with commas', 'text_domain' ),
+   'search_items'               => __( 'Search '.strtolower($s_plural), 'text_domain' ),
+   'add_or_remove_items'        => __( 'Add or remove '.strtolower($s_plural), 'text_domain' ),
+   'choose_from_most_used'      => __( 'Choose from the most used '.strtolower($s_plural), 'text_domain' ),
+  );
+  
+  $a_rewrite = array(
+   'slug'                       => $s_the_type,
+   'with_front'                 => true,
+   'hierarchical'               => true,
+  );
+
+  $a_args = array(
+   'labels'                     => $a_labels,
+   'hierarchical'               => true,
+   'public'                     => true,
+   'show_ui'                    => true,
+   'show_admin_column'          => true,
+   'show_in_nav_menus'          => true,
+   'show_tagcloud'              => true,
+   //'rewrite'                    => $a_rewrite,
+  );
+
+  register_taxonomy( $s_the_taxonomies, $s_the_type, $a_args );
+
+ } // end of foreach
+
+} // end of function register_taxonomies
+add_action( 'init', 'register_taxonomies', 1 );
