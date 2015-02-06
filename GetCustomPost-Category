@@ -1,0 +1,49 @@
+<div class="wrapper">
+	<?php
+		$a_args	=	array(
+			'orderby'		=> 'id', 
+			'order'			=> 'ASC',
+			'parent'		=> 0,
+			'hide_empty'	=> true
+		);
+		$a_solutions = get_terms( 'solution_categories', $a_args );
+	?>
+
+	<div class="post-wrapper">
+		<div class="row">
+			<?php 
+				foreach ($a_solutions as $a_solution) {
+					//print_r($a_solution); 
+			?>
+				<div class="post-item-wrapper">
+
+					<div class="post-thumb-wrap">
+						<a class="post-cat-link" href="<?php echo get_term_link($a_solution,'services_categories');?>">
+							<?php
+								//get the images custom fields from categories
+								$img = get_field('images', 'solution_categories_'.$a_solution->term_id);
+
+								if ($img) { 
+							?>								
+								
+								<img class="img-responsive" src="<?php echo $img['sizes']['featured-thumb']; ?>">
+							
+							<?php } else {
+
+								echo '<img alt="" class="img-responsive center-block" src="'.get_bloginfo('template_url').'/images/blue-force-logo.gif"  />';
+							} ?>
+						</a>
+					</div>	
+					<div class="post-cat-title">
+						<a class="post-cat-link" href="<?php echo get_term_link($a_solution,'services_categories');?>">
+							<?php echo $a_solution->name; ?>									
+						</a>
+					</div>								
+				</div>
+
+					
+			<?php } ?>
+		</div>
+	</div><!-- end of post-wrapper -->	
+
+</div><!-- end of wrapper -->
