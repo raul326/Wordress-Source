@@ -1,0 +1,49 @@
+<!--
+Downloadables (repeater)
+- Title (text)
+- Image (image)
+- File (file)
+-->
+
+<div class="pdf-link-wrap row">
+
+	<?php 
+		$a_downloadables = get_field('downloadables');
+		if( $a_downloadables = get_field ('downloadables') ) {
+			foreach ( $a_downloadables as $downloadable ) {
+				//check the pdf file
+				if ($downloadable['file']['url']) {						
+	?>					
+					<div class="downloadable-item col-lg-4 col-md-4 col-sm-12 col-xs-12">
+						<div class="downloadable-thumb">
+							<?php if ($downloadable['image']) { ?>
+								<img class="img-responsive center-block" src="<?php echo $downloadable['image']['sizes']['featured-thumb']; ?>" alt="<?php echo $downloadable['title']; ?>" />
+							<?php } else { ?>
+								<img class="img-responsive center-block" class="img-responsive center-block" src="<?php bloginfo('template_url'); ?>/images/noimage-braecosales.gif" alt="" />
+							<?php } ?>
+							
+						</div>
+						<div class="downloadable-content">							
+							<h3>
+								<span>
+									<?php
+										if (!empty ($downloadable['title']) ) {
+											echo $downloadable['title']; 
+										} else {
+											echo $downloadable['file']['title'];
+										}
+										
+									?>
+								</span>
+							</h3>
+							<a target="_blank" href="<?php echo $downloadable['file']['url']; ?>">pdf</a>
+						</div>
+					</div>
+					
+	<?php 
+				}
+			}
+		}
+	?> 
+
+</div><!--end of pdf file w/ pdf-icon and title-->
